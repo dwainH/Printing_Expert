@@ -14,7 +14,7 @@
 <body>
     
     <div class="container border rounded">
-        <h2 class="fw-semibold text-start"><span style="font-weight: normal !important;">Login Succesful!&nbsp;</span></h2>
+        <h2 class="fw-semibold text-start"><span style="font-weight: normal !important;">Login Succesfull!&nbsp;</span></h2>
         <p id="loggin_text" style="font-size: 22px;">Redirecting...</p>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
