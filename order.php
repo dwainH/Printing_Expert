@@ -1,6 +1,16 @@
 <?php
 session_start();
+include 'database.php';
 
+$sql = "SELECT price FROM service WHERE serviceName='Poster Printing'";
+$result = mysqli_query($conn,$sql);
+$rowPricePoster=mysqli_fetch_row($result);
+$poster = $rowPricePoster[0];
+
+$sql2 = "SELECT price FROM service WHERE serviceName='Flyer Printing'";
+$result2 = mysqli_query($conn,$sql2);
+$rowPriceFlyer=mysqli_fetch_row($result2);
+$flyer = $rowPriceFlyer[0];
 ?>
 
 <!DOCTYPE html>
@@ -95,6 +105,7 @@ session_start();
                     </div>
                 </div>
             </div>
+            
             <div class="col">
                 <div class="card">
                     <div class="card-body text-center p-4">
@@ -120,6 +131,31 @@ session_start();
             </div>
         </div>
     </div>
+    <div class="col-md-8 col-xl-6 text-center mx-auto order-options mb-3">
+        <h2>Your recent orders</h2>
+        <br>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Created On</th>
+                        <th>Quantity</th>
+                        <th>Size</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Want to cancel your order?</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php
+                        $sql = "";
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="poppup" id="poppup-1">
         <div class="overlay">
             <div class="content">
@@ -127,7 +163,15 @@ session_start();
                 <h1>Order</h1>
                 <form method="post" action="order-action.php">
                 <div class="mb-3">
-                    <input placeholder="Enter the quantity here" id="quantity" class="form-control mb-3" type="text" style=" float:left; margin:auto">      
+                    <input placeholder="Enter the quantity here" id="quantity" name="quantity" class="form-control mb-3" type="text" style=" float:left; margin:auto">      
+                </div>
+                <div class="mb-3">
+                <div id="poster-size" class="mb-3">
+                    <p style="float:left;" >Choose your size:</p>
+                    <select id="type" name="types" style="width:280px; float:right; margin:auto;" class="mb-3" >
+                        <option value="Flyer Printing">Flyer Printing</option>
+                        <option value="Poster Printing">Poster Printing</option>
+                    </select>
                 </div>
                 <div id="poster-size" class="mb-3">
                     <p style="float:left;" >Choose your size:</p>
@@ -136,16 +180,16 @@ session_start();
                         <option value="12 x 18 inches">12 x 18 inches</option>
                         <option value="18 x 24 inches">18 x 24 inches</option>
                     </select>
-                </div><br><br><br>
+                </div>
                 <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <button onclick="checkPrice()" class="btn btn-primary d-block w-100" type="button">Check Price</button>
                 </div>
-                    <input type="text" id="total" readonly class="form-control shadow-none" placeholder="Total price">
+                    <input name="total" type="text" id="total" readonly class="form-control shadow-none" placeholder="Total price(in RM)" required>
                 </div>
                 <div class="mb-3">
                     <p style="float:left;" class="mb-3">Upload your design:</p>
-                    <input class="form-control mb-3" style="float:right; max-width:250px; margin-left:3px" type="file" accept="application/pdf"  >
+                    <input class="form-control mb-3" name="design_file" style="float:right; max-width:250px; margin-left:3px" type="file" accept="application/pdf" required  >
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary d-block w-100" type="submit">Proceed</button>
@@ -176,77 +220,146 @@ session_start();
     </div>
 </footer>
      
-     <script >
 
+     <script >
+       
+        
         function togglePoppup(){
             document.getElementById("poppup-1").classList.toggle("active");
         }
-
+        
         function checkPrice(){
             var select = document.getElementById('size').value;
-            //var dropdown = select.options[select.selectedIndex].value;
+            var selectType = document.getElementById('type').value;
             var quantity = parseInt(document.getElementById("quantity").value);
+            var priceFlyer = <?=$flyer?>;
+            var pricePoster = <?=$poster?>;
+            
 
             if(!quantity && !quantity.value)
             {
                 document.getElementById("total").value = "Please enter the quantity! ";
             }
-            else{
+            
+            if(selectType == "Poster Printing")
+            {
                 if(quantity>=1 && quantity<=50){
-                    var price = 1.5;
+                        if(select=="8.5 x 11 inches"){
+                            var total = 1*quantity*pricePoster;
+                            var x = total.toPrecision(2);
+                            document.getElementById("total").value = x;
+                    }
+                        else if(select=="12 x 18 inches"){
+                            var total = 1.5*quantity*pricePoster;
+                            var x = total.toPrecision(2);
+                            document.getElementById("total").value =  x;
+                    }
+                
+                        else if(select=="18 x 24 inches"){
+                            var total = 2*quantity*pricePoster;
+                            var x = total.toPrecision(2);
+                            document.getElementById("total").value = x;
+                    }
+                    
+                }
+
+                if(quantity>=51 && quantity<=100){     
                     if(select=="8.5 x 11 inches"){
-                        var total = 1*quantity*price;
+                        var total = 1*quantity*pricePoster;
                         var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
+                        document.getElementById("total").value =  x;
                     }
                     else if(select=="12 x 18 inches"){
-                        var total = 1.5*quantity*price;
+                        var total = 1.5*quantity*pricePoster;
                         var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
+                        document.getElementById("total").value =  x;
                     }
                     else if(select=="18 x 24 inches"){
-                        var total = 2*quantity*price;
+                        var total = 2*quantity*pricePoster;
                         var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
+                        document.getElementById("total").value =  x;
                     }
                 }
-                if(quantity>=51 && quantity<=100){
-                    var price = 1;
-                    if(select=="8.5 x 11 inches"){
-                        var total = 1*quantity*price;
-                        var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
-                    }
-                    else if(select=="12 x 18 inches"){
-                        var total = 1.5*quantity*price;
-                        var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
-                    }
-                    else if(select=="18 x 24 inches"){
-                        var total = 2*quantity*price;
-                        var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
-                    }
-                }
+
                 if(quantity>=101){
-                    var price = 0.8;
+
                     if(select=="8.5 x 11 inches"){
-                        var total = 1*quantity*price;
+                        var total = 1*quantity*pricePoster;
                         var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
+                        document.getElementById("total").value =x;
                     }
                     else if(select=="12 x 18 inches"){
-                        var total = 1.5*quantity*price;
+                        var total = 1.5*quantity*pricePoster;
                         var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
+                        document.getElementById("total").value =  x;
                     }
                     else if(select=="18 x 24 inches"){
-                        var total = 2*quantity*price;
+                        var total = 2*quantity*pricePoster;
                         var x = total.toPrecision(2);
-                        document.getElementById("total").value = "Total is: RM " + x;
+                        document.getElementById("total").value = x;
                     }
                 }
             }
+            
+            else if(selectType == "Flyer Printing"){
+                if(quantity>=1 && quantity<=50){
+                        if(select=="8.5 x 11 inches"){
+                            var total = 1*quantity*priceFlyer;
+                            var x = total.toPrecision(2);
+                            document.getElementById("total").value = x;
+                    }
+                        else if(select=="12 x 18 inches"){
+                            var total = 1.5*quantity*priceFlyer;
+                            var x = total.toPrecision(2);
+                            document.getElementById("total").value =  x;
+                    }
+                
+                        else if(select=="18 x 24 inches"){
+                            var total = 2*quantity*priceFlyer;
+                            var x = total.toPrecision(2);
+                            document.getElementById("total").value =  x;
+                    }
+                    
+                }
+
+                else if(quantity>=51 && quantity<=100){     
+                    if(select=="8.5 x 11 inches"){
+                        var total = 1*quantity*priceFlyer;
+                        var x = total.toPrecision(2);
+                        document.getElementById("total").value =  x;
+                    }
+                    else if(select=="12 x 18 inches"){
+                        var total = 1.5*quantity*priceFlyer;
+                        var x = total.toPrecision(2);
+                        document.getElementById("total").value = x;
+                    }
+                    else if(select=="18 x 24 inches"){
+                        var total = 2*quantity*priceFlyer;
+                        var x = total.toPrecision(2);
+                        document.getElementById("total").value =  x;
+                    }
+                }
+
+                else if(quantity>=101){
+
+                    if(select=="8.5 x 11 inches"){
+                        var total = 1*quantity*priceFlyer;
+                        var x = total.toPrecision(2);
+                        document.getElementById("total").value =  x;
+                    }
+                    else if(select=="12 x 18 inches"){
+                        var total = 1.5*quantity*priceFlyer;
+                        var x = total.toPrecision(2);
+                        document.getElementById("total").value =  x;
+                    }
+                    else if(select=="18 x 24 inches"){
+                        var total = 2*quantity*priceFlyer;
+                        var x = total.toPrecision(2);
+                        document.getElementById("total").value =  x;
+                    }
+                }
+            }
+            
         }
         
         btn.addEventListener('click',checkPrice);
