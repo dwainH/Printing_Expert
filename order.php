@@ -11,6 +11,27 @@ $sql2 = "SELECT price FROM service WHERE serviceName='Flyer Printing'";
 $result2 = mysqli_query($conn,$sql2);
 $rowPriceFlyer=mysqli_fetch_row($result2);
 $flyer = $rowPriceFlyer[0];
+
+$resultOrderId = mysqli_query($conn, "SELECT id 
+FROM orders 
+WHERE id = (SELECT MAX(id) FROM orders)");
+$orderId = mysqli_fetch_row($resultOrderId);
+
+$username = $_SESSION['username'];
+$rowUsername = mysqli_query($conn,"SELECT id
+FROM customer 
+WHERE username = '$username'");
+$rowCustomerId=mysqli_fetch_row($rowUsername);
+
+$OrderService = mysqli_query($conn,
+"SELECT `quantity`, `size`,`totalPrice` 
+FROM order_service
+WHERE ordersId = '$orderId[0]'");
+
+$Orders = mysqli_query($conn,"SELECT 'date','status' 
+FROM orders
+WHERE customerId = '$rowCustomerId[0]'");
+$rowOrders=mysqli_fetch_row($Orders);
 ?>
 
 <!DOCTYPE html>
@@ -28,20 +49,24 @@ $flyer = $rowPriceFlyer[0];
     <link rel="stylesheet" href="assets/css/Navbar-With-Button-icons.css">
     <link rel="stylesheet" href="assets/css/order.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script
+      src="https://kit.fontawesome.com/1b607b98d1.js"
+      crossorigin="anonymous"
+    ></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md py-3">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="index.php"><span class="d-flex justify-content-center align-items-center bs-icon-sm bs-icon-rounded bs-icon-primary me-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewbox="0 0 16 16" class="bi bi-bezier"><path fill-rule="evenodd" d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path><path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path></svg></span><span><b>Printing</b><b> Expert</b></span></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+<nav class="navbar navbar-light navbar-expand-md py-3">
+        <div class="container"><i class="fa-regular fa-map" style="width:1rem; height:1rem; margin-right:10px;"></i><a class="navbar-brand d-flex align-items-center" href="index.php"><span><b>Printing</b><b> Expert</b></span></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="About Us.php">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Contact us.php">Contact Us</a></li>
                     <?php if(isset($_SESSION['username'])):?>
                     <li class="nav-item"><a class="nav-link active" href="order.php">Order Now</a></li>
                     <li  class="nav-item nav-link active" style="margin-left:400px"  >Welcome, <?php echo $_SESSION["username"] ?> </li>
-                     <?php echo '</ul><a class="btn btn-primary" role="button" href="logout.php" id="logoutButton">Log Out</a>'?>
-                    <?php else: echo '</ul><a class="btn btn-primary" role="button" id="myButton">Login</a>'?>
+                    <?php echo '</ul><a class="btn btn-primary" role="button" href="logout.php" id="logoutButton">Log Out</a>'?>
+                    <?php else: echo '</ul><a class="btn btn-primary" role="button" href="login.php" id="myButton">Login</a>'?>
                 <?php endif ?>
             </div>
         </div>
@@ -136,23 +161,44 @@ $flyer = $rowPriceFlyer[0];
         <br>
         <div>
             <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Created On</th>
-                        <th>Quantity</th>
-                        <th>Size</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                        <th>Want to cancel your order?</th>
-                    </tr>
-                </thead>
+                
+                <tr class="bg-dark text-white">
+                    <th>Order ID </th>
+                    <th>Quantity</th>
+                    <th>Size</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Want to cancel your order?</th>
+                </tr>
 
-                <tbody>
+                
+                    <?php           
+                        $sqlJOIN ="SELECT orders.status,order_service.quantity, order_service.totalPrice, order_service.size, orders.date, orders.id
+                        FROM order_service
+                        INNER JOIN orders ON orders.id = order_service.ordersId
+                        WHERE orders.customerId = $rowCustomerId[0] AND orders.status = 'Pending'
+                        ORDER BY orders.id DESC
+                        LIMIT 5" ;   
+                        $resultJOIN = mysqli_query($conn,$sqlJOIN);
+                        
+                        if(mysqli_num_rows($resultJOIN)>0){
+                            $i=0;
+                        while($row1 = mysqli_fetch_array($resultJOIN))
+                        {
+                     ?>     
+                        <tr>
+                            <td> <?php echo $row1['id'];  ?> </td>
+                            <td> <?php echo $row1['quantity']; ?> </td>
+                            <td> <?php echo $row1['size']; ?></td>
+                            <td> RM <?php echo $row1['totalPrice']; ?></td>
+                            <td> <?php echo $row1['status']; ?></td>
+                            <td> <a class='btn btn-danger btn-sm' class="btn btn-danger" href="cancel.php?id=<?php echo $row1['id']?>">Cancel</a></td>
+                       </tr>     
                     <?php
-                        $sql = "";
+                            $i++;
+                        }
+                    }
                     ?>
-                </tbody>
             </table>
         </div>
     </div>
@@ -185,7 +231,7 @@ $flyer = $rowPriceFlyer[0];
                 <div class="input-group-prepend">
                     <button onclick="checkPrice()" class="btn btn-primary d-block w-100" type="button">Check Price</button>
                 </div>
-                    <input name="total" type="text" id="total" readonly class="form-control shadow-none" placeholder="Total price(in RM)" required>
+                    <input name="total" type="text" id="total" required readonly class="form-control shadow-none" placeholder="Total price(in RM)" >
                 </div>
                 <div class="mb-3">
                     <p style="float:left;" class="mb-3">Upload your design:</p>

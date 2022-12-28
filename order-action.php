@@ -53,37 +53,51 @@
     $ServiceId=mysqli_fetch_row($resultType);
     
     //Get the employee id
-    $result = mysqli_query($conn,"SELECT employeeid
+    $resultEmploId = mysqli_query($conn,"SELECT employeeid
     FROM orders
-    GROUP BY employeeid
+    GROUP BY employeeId
     ORDER BY COUNT(*) ASC
     LIMIT 1;");
-    $rowsEmployeeId = mysqli_fetch_row($result);
-
+    $rowsEmployeeId = mysqli_fetch_row($resultEmploId);
+    
     //Get the customer id based on username
-    $result2 = mysqli_query($conn,"SELECT id
+    $resultCustId = mysqli_query($conn,"SELECT id
     FROM customer 
     WHERE username = '$username'");
-    $rowCustomerId=mysqli_fetch_row($result2);
+    $rowCustomerId=mysqli_fetch_row($resultCustId);
+    
+    //Get the latest order id
+    $resultOrderId = mysqli_query($conn, "SELECT id 
+    FROM orders 
+    WHERE id = (SELECT MAX(id) FROM orders)");
+    $orderId = mysqli_fetch_row($resultOrderId);
 
-    $statement2 = $conn->prepare("insert into orders(date,status,customerid,employeeid) values(?,?,?,?)");
-    $statement2->bind_param("ssss",$Date,$Status,$rowCustomerId[0],$rowEmployeeId[0]);
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+
+    //INSERT NEW ORDER 
+    $statement2 = $conn->prepare("INSERT into orders(date,status,customerId,employeeId) 
+    VALUES (?,?,?,?)");
+    $statement2->bind_param("ssss",$Date,$Status,$rowCustomerId[0],$rowsEmployeeId[0]);
     $statement2->execute();
     $statement2->close();
 
-    //Get the latest order id
-    $result3 = mysqli_query($conn, "SELECT id 
-    FROM orders 
-    WHERE id = (SELECT MAX(id) FROM orders)");
-    $orderId = mysqli_fetch_row($result3);
-
     
-    $statement = $conn->prepare("INSERT INTO `order_service` (`quantity`, `totalPrice`, `size`, `imageFile`, `ordersId`, `serviceId`) 
+    //INSERT NEW ORDER_SERVICE
+    $statement = $conn->prepare("INSERT INTO order_service (quantity, totalPrice, size, imageFile, ordersId, serviceId) 
     VALUES (?,?,?,?,?,?)");
     $orderid = $orderId[0];
     $serviceId = $orderId[0];
     $statement->bind_param("ssssss",$quantity,$total,$sizes,$design,$orderId[0],$ServiceId[0]);
     $statement->execute();
     $statement->close();
-    header('payment.php');
+
+    if($statement && $statement2){
+        echo "Success!";
+        header('Location:payment.php'); 
+    }
+   
+    
+    
 ?>
