@@ -33,11 +33,13 @@
                     
                     <li class="nav-item"><a class="nav-link" href="Contact us.php">Contact Us<img style="max-width:25px; max-height:20px; margin-bottom:5px;"src="assets/img/icon-contact.png"></a></li>
                     
+                    <li class="nav-item"><a class="btn btn-primary" role="button" href="../html/workshop2_homepage.html">Staff Login</a></li>
+
                     <?php if(isset($_SESSION['username'])):?>
                     <li class="nav-item"><a class="nav-link" href="order.php">Order Now</a></li>
                     <li  class="nav-item nav-link active" style="margin-left:400px"  >Welcome, <?php echo $_SESSION["username"] ?> </li>
                     <?php echo '</ul><a class="btn btn-primary" role="button" href="logout.php" id="logoutButton">Log Out</a>'?>
-                    <?php else: echo '</ul><a class="btn btn-primary" role="button" href="login.php" id="myButton">Login</a>'?>
+                    <?php else: echo '</ul><a class="btn btn-primary" role="button" href="login.php" id="myButton">Customer Login</a>'?>
                 <?php endif ?>
             </div>
         </div>

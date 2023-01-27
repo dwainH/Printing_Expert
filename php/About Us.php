@@ -24,6 +24,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link active" href="About Us.php">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="Contact us.php">Contact Us<img style="max-width:25px; max-height:20px; margin-bottom:5px;"src="assets/img/icon-contact.png"></a></li>
+                    <li class="nav-item"><a class="btn btn-primary" role="button" href="../html/workshop2_homepage.html">Staff Login</a></li>
                     </a></li>
                     <?php if(isset($_SESSION['username'])):?>
                     <li class="nav-item"><a class="nav-link" href="order.php">Order Now</a></li>

@@ -29,6 +29,7 @@ include('dbconn.php');
                                 <div class="card-body p-5">
                                     <!-- connection to message.php-->
                                     <?php include('message.php'); ?>
+                                    
                                     <h3 class="text-center mb-4">Log In</h3>
 
                                     <!-- if error occur -->

@@ -338,58 +338,69 @@ $rowOrders=mysqli_fetch_row($Orders);
             if(selectType == "Poster Printing")
             {
                 if(quantity>=1 && quantity<=50){
+                    let discount = 0.05;
                         if(select=="8.5 x 11 inches"){
                             var total = 1*quantity*pricePoster;
-                            var x = total.toFixed(2);
+                            var last_total =total -(discount * total);
+                            var x = last_total.toFixed(2);
                             document.getElementById("total").value = x;
                     }
                         else if(select=="12 x 18 inches"){
                             var total = 1.5*quantity*pricePoster;
-                            var x = total.toFixed(2);
+                            var last_total =total -(discount * total);
+                            var x = last_total.toFixed(2);
                             document.getElementById("total").value =  x;
                     }
                 
                         else if(select=="18 x 24 inches"){
                             var total = 2*quantity*pricePoster;
-                            var x = total.toFixed(2);
+                            var last_total =total -(discount * total);
+                            var x = last_total.toFixed(2);
                             document.getElementById("total").value = x;
                     }
                     
                 }
 
                 if(quantity>=51 && quantity<=100){     
+                    let discount = 0.1;
                     if(select=="8.5 x 11 inches"){
                         var total = 1*quantity*pricePoster;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                     else if(select=="12 x 18 inches"){
                         var total = 1.5*quantity*pricePoster;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                     else if(select=="18 x 24 inches"){
                         var total = 2*quantity*pricePoster;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                 }
 
                 if(quantity>=101){
-
+                    let discount = 0.15;
                     if(select=="8.5 x 11 inches"){
                         var total = 1*quantity*pricePoster;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =x;
                     }
                     else if(select=="12 x 18 inches"){
                         var total = 1.5*quantity*pricePoster;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                     else if(select=="18 x 24 inches"){
                         var total = 2*quantity*pricePoster;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value = x;
                     }
                 }
@@ -397,58 +408,69 @@ $rowOrders=mysqli_fetch_row($Orders);
             
             else if(selectType == "Flyer Printing"){
                 if(quantity>=1 && quantity<=50){
+                    let discount=0.05;
                         if(select=="8.5 x 11 inches"){
                             var total = 1*quantity*priceFlyer;
-                            var x = total.toFixed(2);
+                            var last_total =total -(discount * total);
+                            var x = last_total.toFixed(2);
                             document.getElementById("total").value = x;
                     }
                         else if(select=="12 x 18 inches"){
                             var total = 1.5*quantity*priceFlyer;
-                            var x = total.toFixed(2);
+                            var last_total =total -(discount * total);
+                            var x = last_total.toFixed(2);
                             document.getElementById("total").value =  x;
                     }
                 
                         else if(select=="18 x 24 inches"){
                             var total = 2*quantity*priceFlyer;
-                            var x = total.toFixed(2);
+                            var last_total =total -(discount * total);
+                            var x = last_total.toFixed(2);
                             document.getElementById("total").value =  x;
                     }
                     
                 }
 
-                else if(quantity>=51 && quantity<=100){     
+                else if(quantity>=51 && quantity<=100){   
+                    let discount = 0.1;  
                     if(select=="8.5 x 11 inches"){
                         var total = 1*quantity*priceFlyer;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                     else if(select=="12 x 18 inches"){
                         var total = 1.5*quantity*priceFlyer;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value = x;
                     }
                     else if(select=="18 x 24 inches"){
                         var total = 2*quantity*priceFlyer;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                 }
 
                 else if(quantity>=101){
-
+                    let discount = 0.15;
                     if(select=="8.5 x 11 inches"){
                         var total = 1*quantity*priceFlyer;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                     else if(select=="12 x 18 inches"){
                         var total = 1.5*quantity*priceFlyer;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total);
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                     else if(select=="18 x 24 inches"){
                         var total = 2*quantity*priceFlyer;
-                        var x = total.toFixed(2);
+                        var last_total =total -(discount * total); 
+                        var x = last_total.toFixed(2);
                         document.getElementById("total").value =  x;
                     }
                 }

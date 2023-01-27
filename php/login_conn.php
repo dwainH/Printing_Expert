@@ -20,20 +20,20 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     if ($row['username'] === $username && $row['password'] === $password) {
         $_SESSION['username'] = $row['username'];
         $_SESSION['id'] = $row['id'];
-		$_SESSION['message'] = "Error! Something Went Wrong";
+		$_SESSION['message'] = "Login Successfully";
         header("Location: dashboard.php");
 		exit();
 	}
 	else{
 		// page location
-		$_SESSION['message'] = "Login Successfully";
-		header("Location: login.php");
+		$_SESSION['message'] = "Error! Something Went Wrong";
+		header("Location: admin_login.php");
 		exit(0);
 	}
 		
 }else{
 
-	header("Location: login.php");
+	header("Location: admin_login.php");
 	exit();
 }
 ?>

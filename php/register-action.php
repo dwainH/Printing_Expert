@@ -9,7 +9,7 @@
     $address = $_POST['address'];
     $phonenumber = $_POST['phoneNumber'];
     
-    
+    $hashed_pass = password_hash($password,PASSWORD_DEFAULT);
 
     
     $check_username = mysqli_query($conn,"SELECT username FROM customer WHERE username='$username'");
@@ -19,7 +19,7 @@
 
     else{
         $statement = $conn->prepare("insert into customer(firstname,lastname,address,email,phoneNumber,username,password) values(?,?,?,?,?,?,?)");
-        $statement->bind_param("sssssss",$firstname,$lastname,$address,$email,$phonenumber,$username,$password);
+        $statement->bind_param("sssssss",$firstname,$lastname,$address,$email,$phonenumber,$username,$hashed_pass);
         $statement->execute();
         $statement->close();
         $_SESSION['email']=$email;

@@ -24,7 +24,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-10">
                     <i class="fa-regular fa-map"></i>
                 </div>
@@ -84,7 +84,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="admin_login.php" data-target="#collapseEmployee"
+                <a class="nav-link collapsed" href="admin_logout.php" data-target="#collapseEmployee"
                     aria-expanded="true" aria-controls="collapseEmployee">
                     <i class="bi bi-box-arrow-left"></i>
                     <span>Log Out</span>
